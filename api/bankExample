@@ -1,0 +1,32 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import mysql.connector
+import json
+
+
+def application(environ, start_response):
+    status = '200 OK'
+    output = sqlTest()
+
+    response_headers = [('Content-type', 'text/plain'),
+                        ('Content-Length', str(len(output)))]
+    start_response(status, response_headers)
+
+    return [output]
+
+
+def sqlTest():
+
+    mydb = mysql.connector.connect(user='root', passwd='',
+                                   database='')
+
+    mycursor = mydb.cursor(dictionary=True)
+    sql = 'SELECT* FROM customers ORDER BY name'
+    mycursor.execute(sql)
+
+    res = mycursor.fetchall()
+    return json.dumps(res)
+
+
+
+			
